@@ -1,1 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz Build Questionnaire | Tyche Digital Agency</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --forest: #2b4231;
+      --linen: #e5e0d4;
+      --walnut: #6c5138;
+      --cream: #e7e0d5;
+      --navy: #1e3249;
+      --blush: #ead3c5;
+      --ink: #1a1a1a;
+      --muted: #6b6459;
+      --border: #cfc8bc;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    header {
+      background: var(--forest);
+      padding: 28px 40px 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-mark {
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+    }
+
+    .logo-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 500;
+      color: var(--linen);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .logo-text span {
+      display: block;
+      font-size: 0.65rem;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      color: var(--blush);
+      margin-top: 2px;
+    }
+
+    /* HERO */
+    .hero {
+      background: var(--forest);
+      padding: 56px 40px 60px;
+      text-align: center;
+      border-bottom: 3px solid var(--walnut);
+    }
+
+    .hero-eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--blush);
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 400;
+      color: var(--linen);
+      line-height: 1.15;
+      max-width: 680px;
+      margin: 0 auto 20px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--blush);
+    }
+
+    .hero-sub {
+      font-size: 0.95rem;
+      color: #b8b0a4;
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* PROGRESS */
+    .progress-bar-wrap {
+      background: var(--navy);
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .progress-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--blush);
+      white-space: nowrap;
+      font-weight: 500;
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 3px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--blush);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    .progress-count {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.4);
+      white-space: nowrap;
+    }
+
+    /* MAIN */
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 56px 24px 80px;
+    }
+
+    /* SECTION */
+    .form-section {
+      margin-bottom: 64px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      margin-bottom: 36px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.2rem;
+      font-weight: 400;
+      color: var(--walnut);
+      line-height: 1;
+      opacity: 0.45;
+      flex-shrink: 0;
+      margin-top: -4px;
+    }
+
+    .section-title-wrap {}
+
+    .section-eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--walnut);
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.55rem;
+      font-weight: 500;
+      color: var(--forest);
+      line-height: 1.2;
+    }
+
+    /* FIELDS */
+    .field {
+      margin-bottom: 32px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--forest);
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    label .field-hint {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 300;
+      color: var(--muted);
+      margin-top: 3px;
+      font-style: italic;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 110px;
+      padding: 14px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: var(--ink);
+      background: #faf8f5;
+      border: 1.5px solid var(--border);
+      border-radius: 3px;
+      resize: vertical;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: var(--walnut);
+      box-shadow: 0 0 0 3px rgba(108, 81, 56, 0.1);
+    }
+
+    textarea::placeholder {
+      color: #b0a89e;
+    }
+
+    input[type="text"], input[type="email"] {
+      width: 100%;
+      padding: 13px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--ink);
+      background: #faf8f5;
+      border: 1.5px solid var(--border);
+      border-radius: 3px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+
+    input[type="text"]:focus, input[type="email"]:focus {
+      border-color: var(--walnut);
+      box-shadow: 0 0 0 3px rgba(108, 81, 56, 0.1);
+    }
+
+    /* DIVIDER */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(to right, var(--walnut), transparent);
+      margin-bottom: 64px;
+      opacity: 0.3;
+    }
+
+    /* CLIENT INFO BLOCK */
+    .client-block {
+      background: var(--forest);
+      border-radius: 4px;
+      padding: 32px 36px;
+      margin-bottom: 64px;
+    }
+
+    .client-block-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--linen);
+      margin-bottom: 24px;
+      letter-spacing: 0.04em;
+    }
+
+    .client-block label {
+      color: var(--blush);
+    }
+
+    .client-block textarea,
+    .client-block input[type="text"],
+    .client-block input[type="email"] {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.15);
+      color: var(--linen);
+    }
+
+    .client-block textarea::placeholder,
+    .client-block input::placeholder {
+      color: rgba(255,255,255,0.25);
+    }
+
+    .client-block textarea:focus,
+    .client-block input:focus {
+      border-color: var(--blush);
+      box-shadow: 0 0 0 3px rgba(234, 211, 197, 0.12);
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 560px) {
+      .two-col { grid-template-columns: 1fr; }
+    }
+
+    /* SUBMIT */
+    .submit-section {
+      text-align: center;
+      padding: 48px 24px;
+      background: var(--navy);
+      border-radius: 4px;
+      margin-top: 16px;
+    }
+
+    .submit-section p {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 28px;
+      line-height: 1.6;
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .submit-btn {
+      display: inline-block;
+      background: var(--walnut);
+      color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 17px 44px;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .submit-btn:hover {
+      background: #7d5e42;
+      transform: translateY(-1px);
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* SUCCESS */
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 80px 24px;
+    }
+
+    .success-screen.visible {
+      display: block;
+    }
+
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      background: var(--forest);
+      border-radius: 50%;
+      margin: 0 auto 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .success-screen h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      color: var(--forest);
+      margin-bottom: 16px;
+    }
+
+    .success-screen p {
+      font-size: 0.92rem;
+      color: var(--muted);
+      max-width: 420px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* STATUS */
+    .status-msg {
+      margin-top: 16px;
+      font-size: 0.82rem;
+      color: var(--blush);
+      min-height: 20px;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--forest);
+      text-align: center;
+      padding: 24px;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.25);
+      letter-spacing: 0.1em;
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 20px 20px; }
+      .hero { padding: 40px 20px 44px; }
+      main { padding: 40px 16px 60px; }
+      .client-block { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <svg class="logo-mark" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="21" cy="21" r="20" stroke="#ead3c5" stroke-width="1.5"/>
+    <path d="M13 14h16M21 14v14" stroke="#e5e0d4" stroke-width="2" stroke-linecap="round"/>
+    <path d="M15 28c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#ead3c5" stroke-width="1.5" stroke-linecap="round"/>
+  </svg>
+  <div class="logo-text">
+    Tyche Digital Agency
+    <span>Client Onboarding</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-eyebrow">Quiz Build Questionnaire</div>
+  <h1>Let's build something<br/><em>people actually finish.</em></h1>
+  <p class="hero-sub">Take your time with each section. There are no wrong answers. The more specific you are, the better the quiz performs.</p>
+</div>
+
+<div class="progress-bar-wrap">
+  <span class="progress-label">Progress</span>
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+  <span class="progress-count" id="progressCount">0 of 38 answered</span>
+</div>
+
+<main>
+  <form id="onboardingForm">
+
+    <!-- CLIENT INFO -->
+    <div class="client-block">
+      <div class="client-block-title">Before we begin</div>
+      <div class="two-col">
+        <div class="field">
+          <label for="client_name">Your Name</label>
+          <input type="text" id="client_name" name="client_name" placeholder="Full name" required />
+        </div>
+        <div class="field">
+          <label for="client_email">Your Email</label>
+          <input type="email" id="client_email" name="client_email" placeholder="you@yourbusiness.com" required />
+        </div>
+      </div>
+      <div class="field">
+        <label for="quiz_name">What is this quiz called (or what are you thinking)?
+          <span class="field-hint">Working title is fine.</span>
+        </label>
+        <input type="text" id="quiz_name" name="quiz_name" placeholder="e.g. The Attachment Style Quiz, The Brand Voice Finder..." />
+      </div>
+    </div>
+
+    <!-- SECTION 1 -->
+    <div class="form-section" data-section="1">
+      <div class="section-header">
+        <div class="section-number">01</div>
+        <div class="section-title-wrap">
+          <div class="section-eyebrow">Section One</div>
+          <div class="section-title">The person entering the quiz</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="q1_1">Who is the ideal person taking this quiz?
+          <span class="field-hint">Describe them beyond demographics. Who are they emotionally, professionally, situationally?</span>
+        </label>
+        <textarea id="q1_1" name="q1_1" placeholder="She's a therapist in private practice, maybe 3-5 years in, who keeps second-guessing her niche..."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q1_2">What are they probably struggling with when they find this quiz?</label>
+        <textarea id="q1_2" name="q1_2" placeholder="She knows something is off but can't name it. She keeps attracting clients she doesn't love working with..."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q1_3">What have they already tried before coming to you?</label>
+        <textarea id="q1_3" name="q1_3" placeholder="Downloaded 4 freebies, took a Human Design reading, maybe did a course they never finished..."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q1_4">What are they tired of hearing?
+          <span class="field-hint">The advice, the phrases, the platitudes that make them roll their eyes.</span>
+        </label>
+        <textarea id="q1_4" name="q1_4" placeholder="'Just niche down.' 'Your ideal client is you five years ago.' 'Get clear on your why.'..."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q1_5">What are they secretly hoping the quiz will tell them?</label>
+        <textarea id="q1_5" name="q1_5" placeholder="That there is something specific about them that explains why it has felt so hard..."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q1_6">What are they afraid the quiz might confirm?</label>
+        <textarea id="q1_6" name="q1_6" placeholder="That they are the problem. That they chose the wrong path. That they are not cut out for this..."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q1_7">What language would they use to describe their problem?
+          <span class="field-hint">Pull from real words: DMs, reviews, client calls. Verbatim if you have it.</span>
+        </label>
+        <textarea id="q1_7" name="q1_7" placeholder="'I feel stuck.' 'I know what to do, I just can't make myself do it.' 'Something feels off but I can't pinpoint it.'..."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q1_8">What language would they never use, even if it is technically accurate?
+          <span class="field-hint">Words or phrases that feel clinical, salesy, or like they belong to someone else's world.</span>
+        </label>
+        <textarea id="q1_8" name="q1_8" placeholder="'Revenue optimization.' 'Scaling.' 'Monetize your expertise.' Anything that sounds like a business school case study..."></textarea>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- SECTION 2 -->
+    <div class="form-section" data-section="2">
+      <div class="section-header">
+        <div class="section-number">02</div>
+        <div class="section-title-wrap">
+          <div class="section-eyebrow">Section Two</div>
+          <div class="section-title">The purpose of the quiz</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="q2_1">What should this quiz help the user realize?
+          <span class="field-hint">The core insight. The thing they were already circling but couldn't name on their own.</span>
+        </label>
+        <textarea id="q2_1" name="q2_1"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q2_2">Is the quiz primarily for self-awareness, lead capture, offer matching, education, or booking consults?
+          <span class="field-hint">You can choose more than one, but be honest about the priority order.</span>
+        </label>
+        <textarea id="q2_2" name="q2_2" placeholder="Lead capture first, then offer matching. Self-awareness is the hook but conversion is the goal..."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q2_3">What should someone feel after receiving their result?</label>
+        <textarea id="q2_3" name="q2_3" placeholder="Seen. Like someone finally put language to something they have been carrying for a while..."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q2_4">What should someone do immediately after receiving their result?
+          <span class="field-hint">The single next action. Be specific.</span>
+        </label>
+        <textarea id="q2_4" name="q2_4" placeholder="Book a call. Join the waitlist. Download the next resource. Reply to the welcome email..."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q2_5">What would make this quiz feel valuable enough that someone would want to share it?</label>
+        <textarea id="q2_5" name="q2_5" placeholder="If the result page felt like a real read, not a horoscope. If it named something specific enough that she wanted to send it to her sister and say 'this is literally me'..."></textarea>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- SECTION 3 -->
+    <div class="form-section" data-section="3">
+      <div class="section-header">
+        <div class="section-number">03</div>
+        <div class="section-title-wrap">
+          <div class="section-eyebrow">Section Three</div>
+          <div class="section-title">The color/results framework</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="q3_1">What does each color represent in the simplest possible language?
+          <span class="field-hint">One sentence per result. No jargon, no acronyms. If someone's mom read it, would she get it?</span>
+        </label>
+        <textarea id="q3_1" name="q3_1" min-height="140px" placeholder="Red: The one who keeps moving so she doesn't have to feel. Blue: The one who over-explains her way out of being seen..."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q3_2">What is the core wound, pattern, or challenge for each color?</label>
+        <textarea id="q3_2" name="q3_2"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q3_3">What is the hidden strength of each color?</label>
+        <textarea id="q3_3" name="q3_3"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q3_4">What does each color usually misunderstand about themselves?</label>
+        <textarea id="q3_4" name="q3_4"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q3_5">What does each color need to hear first before they are ready to work with you?</label>
+        <textarea id="q3_5" name="q3_5"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q3_6">Which color/result is most likely to become a paying client?</label>
+        <textarea id="q3_6" name="q3_6" style="min-height:80px"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q3_7">Which result needs the most nurturing before booking?</label>
+        <textarea id="q3_7" name="q3_7" style="min-height:80px"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q3_8">Are any results not ideal clients?
+          <span class="field-hint">Be direct. If a result type tends to churn, ghost, or not be a good fit, name that here.</span>
+        </label>
+        <textarea id="q3_8" name="q3_8" style="min-height:80px"></textarea>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- SECTION 4 -->
+    <div class="form-section" data-section="4">
+      <div class="section-header">
+        <div class="section-number">04</div>
+        <div class="section-title-wrap">
+          <div class="section-eyebrow">Section Four</div>
+          <div class="section-title">The result page payoff</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="q4_1">What should each result page include?
+          <span class="field-hint">Think structure: what sections, what types of content, what CTA placement.</span>
+        </label>
+        <textarea id="q4_1" name="q4_1"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q4_2">What should each result page avoid?</label>
+        <textarea id="q4_2" name="q4_2" placeholder="Avoid anything that feels like a personality test disclaimer. Avoid bullet lists that read like a chart. Avoid generic affirmations..."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q4_3">What would make someone say, "Okay, she sees me"?
+          <span class="field-hint">What level of specificity, what type of language, what acknowledgment of their situation would create that moment?</span>
+        </label>
+        <textarea id="q4_3" name="q4_3"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q4_4">What is the first sentence each result needs to hear?
+          <span class="field-hint">One for each result type, if you can. These become the opening lines of each result page.</span>
+        </label>
+        <textarea id="q4_4" name="q4_4"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q4_5">What is the "you are not broken, this is what is happening" explanation for each result?</label>
+        <textarea id="q4_5" name="q4_5"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q4_6">What is the recommended next step for each result?</label>
+        <textarea id="q4_6" name="q4_6"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q4_7">Should each color lead to the same offer, or different offers?
+          <span class="field-hint">If different, list which result leads where.</span>
+        </label>
+        <textarea id="q4_7" name="q4_7" style="min-height:80px"></textarea>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- SECTION 5 -->
+    <div class="form-section" data-section="5">
+      <div class="section-header">
+        <div class="section-number">05</div>
+        <div class="section-title-wrap">
+          <div class="section-eyebrow">Section Five</div>
+          <div class="section-title">Lead conversion and workflow</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="q5_1">What happens after someone submits their email?</label>
+        <textarea id="q5_1" name="q5_1" style="min-height:80px"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q5_2">Should they receive their result instantly on screen, by email, or both?</label>
+        <textarea id="q5_2" name="q5_2" style="min-height:80px"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q5_3">What email should they receive first?
+          <span class="field-hint">Describe the tone, the content, and the job this email needs to do.</span>
+        </label>
+        <textarea id="q5_3" name="q5_3"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q5_4">What should happen 24 hours later?</label>
+        <textarea id="q5_4" name="q5_4" style="min-height:80px"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q5_5">What should happen 3 to 5 days later?</label>
+        <textarea id="q5_5" name="q5_5" style="min-height:80px"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q5_6">At what point should they be invited to book?</label>
+        <textarea id="q5_6" name="q5_6" style="min-height:80px"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q5_7">What objections do people have before booking with you?
+          <span class="field-hint">The real hesitations, not the polite ones. What do they say and what do they actually mean?</span>
+        </label>
+        <textarea id="q5_7" name="q5_7"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q5_8">What questions do people usually ask before hiring you?</label>
+        <textarea id="q5_8" name="q5_8"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q5_9">What makes someone finally say yes?</label>
+        <textarea id="q5_9" name="q5_9"></textarea>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- SECTION 6 -->
+    <div class="form-section" data-section="6">
+      <div class="section-header">
+        <div class="section-number">06</div>
+        <div class="section-title-wrap">
+          <div class="section-eyebrow">Section Six</div>
+          <div class="section-title">Boundaries and scope</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="q6_1">What do you not want to offer through this quiz?
+          <span class="field-hint">What is out of scope for this funnel specifically?</span>
+        </label>
+        <textarea id="q6_1" name="q6_1" style="min-height:80px"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q6_2">What topics should be handled only in a consultation?</label>
+        <textarea id="q6_2" name="q6_2" style="min-height:80px"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q6_3">What claims or promises should we avoid?
+          <span class="field-hint">Outcomes, timelines, or guarantees that would not be accurate or appropriate to put in writing.</span>
+        </label>
+        <textarea id="q6_3" name="q6_3" style="min-height:80px"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q6_4">Are there any words, modalities, or spiritual references you want softened?
+          <span class="field-hint">Anything that needs to be handled with care for your audience or licensure context.</span>
+        </label>
+        <textarea id="q6_4" name="q6_4" style="min-height:80px"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q6_5">Are there any legal, ethical, medical, or therapeutic boundaries we need to be careful around?
+          <span class="field-hint">If you are licensed or credentialed, note anything that affects how we frame advice or outcomes.</span>
+        </label>
+        <textarea id="q6_5" name="q6_5"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="q6_6">Anything else we should know before we start building?
+          <span class="field-hint">Previous versions of this quiz, specific tech you're already using, timelines, or things that have not worked in the past.</span>
+        </label>
+        <textarea id="q6_6" name="q6_6" placeholder="Optional but often the most useful thing in the whole document."></textarea>
+      </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="submit-section">
+      <p>When you hit submit, Veronica receives your answers immediately. You will get a confirmation at the email you provided above.</p>
+      <button type="submit" class="submit-btn" id="submitBtn">Submit Questionnaire</button>
+      <div class="status-msg" id="statusMsg"></div>
+    </div>
+
+  </form>
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <path d="M6 14l6 6 10-10" stroke="#e5e0d4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h2>You're done.</h2>
+    <p>Veronica has your answers. Expect a message from her within 1 to 2 business days as she reviews what you've shared and begins mapping the build.</p>
+  </div>
+
+</main>
+
+<footer>
+  &copy; 2025 Tyche Digital Agency &nbsp;&middot;&nbsp; tychetouch.com
+</footer>
+
+<script>
+  // EmailJS init
+  emailjs.init({ publicKey: "MJt_zDIq8FCr544zR" });
+
+  // Progress tracking
+  const allTextareas = document.querySelectorAll('textarea');
+  const allInputs = document.querySelectorAll('input[type="text"], input[type="email"]');
+  const totalFields = allTextareas.length + allInputs.length;
+  const progressFill = document.getElementById('progressFill');
+  const progressCount = document.getElementById('progressCount');
+
+  function updateProgress() {
+    let answered = 0;
+    allTextareas.forEach(t => { if (t.value.trim().length > 0) answered++; });
+    allInputs.forEach(i => { if (i.value.trim().length > 0) answered++; });
+    const pct = Math.round((answered / totalFields) * 100);
+    progressFill.style.width = pct + '%';
+    progressCount.textContent = answered + ' of ' + totalFields + ' answered';
+  }
+
+  allTextareas.forEach(t => t.addEventListener('input', updateProgress));
+  allInputs.forEach(i => i.addEventListener('input', updateProgress));
+
+  // Form submission
+  document.getElementById('onboardingForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const btn = document.getElementById('submitBtn');
+    const status = document.getElementById('statusMsg');
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+    status.textContent = '';
+
+    // Build params
+    const fd = new FormData(this);
+    const data = {};
+    fd.forEach((v, k) => { data[k] = v || '(not answered)'; });
+
+    const templateParams = {
+      to_email: 'veronica@tychetouch.com',
+      client_name: data.client_name,
+      client_email: data.client_email,
+      quiz_name: data.quiz_name,
+
+      // Section 1
+      q1_1: data.q1_1, q1_2: data.q1_2, q1_3: data.q1_3, q1_4: data.q1_4,
+      q1_5: data.q1_5, q1_6: data.q1_6, q1_7: data.q1_7, q1_8: data.q1_8,
+
+      // Section 2
+      q2_1: data.q2_1, q2_2: data.q2_2, q2_3: data.q2_3, q2_4: data.q2_4, q2_5: data.q2_5,
+
+      // Section 3
+      q3_1: data.q3_1, q3_2: data.q3_2, q3_3: data.q3_3, q3_4: data.q3_4,
+      q3_5: data.q3_5, q3_6: data.q3_6, q3_7: data.q3_7, q3_8: data.q3_8,
+
+      // Section 4
+      q4_1: data.q4_1, q4_2: data.q4_2, q4_3: data.q4_3, q4_4: data.q4_4,
+      q4_5: data.q4_5, q4_6: data.q4_6, q4_7: data.q4_7,
+
+      // Section 5
+      q5_1: data.q5_1, q5_2: data.q5_2, q5_3: data.q5_3, q5_4: data.q5_4,
+      q5_5: data.q5_5, q5_6: data.q5_6, q5_7: data.q5_7, q5_8: data.q5_8, q5_9: data.q5_9,
+
+      // Section 6
+      q6_1: data.q6_1, q6_2: data.q6_2, q6_3: data.q6_3,
+      q6_4: data.q6_4, q6_5: data.q6_5, q6_6: data.q6_6,
+    };
+
+    try {
+      await emailjs.send('MJt_zDIq8FCr544zR', 'MJt_zDIq8FCr544zR', templateParams);
+      document.getElementById('onboardingForm').style.display = 'none';
+      document.getElementById('successScreen').classList.add('visible');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      console.error(err);
+      status.textContent = 'Something went wrong. Please try again or email veronica@tychetouch.com directly.';
+      btn.disabled = false;
+      btn.textContent = 'Submit Questionnaire';
+    }
+  });
+</script>
+</body>
+</html>
+
 
