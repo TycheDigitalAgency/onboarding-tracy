@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Quiz Build Questionnaire | Tyche Digital Agency</title>
+  <link rel="icon" type="image/png" href="https://assets.cdn.filesafe.space/erNBMEPHr5mwBKO660ir/media/695ea829a0a48408c7196071.png"/>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
@@ -40,9 +41,10 @@
     }
 
     .logo-mark {
-      width: 42px;
-      height: 42px;
+      width: 48px;
+      height: 48px;
       flex-shrink: 0;
+      object-fit: contain;
     }
 
     .logo-text {
@@ -439,11 +441,7 @@
 <body>
 
 <header>
-  <svg class="logo-mark" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="21" cy="21" r="20" stroke="#ead3c5" stroke-width="1.5"/>
-    <path d="M13 14h16M21 14v14" stroke="#e5e0d4" stroke-width="2" stroke-linecap="round"/>
-    <path d="M15 28c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#ead3c5" stroke-width="1.5" stroke-linecap="round"/>
-  </svg>
+  <img src="https://assets.cdn.filesafe.space/erNBMEPHr5mwBKO660ir/media/69eebbcd05d4199001d796c8.png" alt="Tyche Digital Agency" class="logo-mark" />
   <div class="logo-text">
     Tyche Digital Agency
     <span>Client Onboarding</span>
@@ -914,7 +912,7 @@
     };
 
     try {
-      await emailjs.send('MJt_zDIq8FCr544zR', 'MJt_zDIq8FCr544zR', templateParams);
+      await emailjs.send('service_doffj8i', 'template_pbdscfr', templateParams);
       document.getElementById('onboardingForm').style.display = 'none';
       document.getElementById('successScreen').classList.add('visible');
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -928,5 +926,3 @@
 </script>
 </body>
 </html>
-
-
