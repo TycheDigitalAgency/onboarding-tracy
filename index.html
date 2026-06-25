@@ -913,6 +913,14 @@
 
     try {
       await emailjs.send('service_doffj8i', 'template_pbdscfr', templateParams);
+
+      // Confirmation email to client
+      await emailjs.send('service_doffj8i', 'template_p0bnpp1', {
+        client_name: data.client_name,
+        client_email: data.client_email,
+        quiz_name: data.quiz_name,
+        to_email: data.client_email,
+      });
       document.getElementById('onboardingForm').style.display = 'none';
       document.getElementById('successScreen').classList.add('visible');
       window.scrollTo({ top: 0, behavior: 'smooth' });
